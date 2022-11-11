@@ -11,13 +11,13 @@ class Product(models.Model):
     inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now=True)
     collection = models.ForeignKey('Collection', on_delete=models.CASCADE)
-    promotions = models.ManyToManyField('Promotion', blank=True)
+    promotions = models.ManyToManyField('Promotion')
 
     def __str__(self):
         return self.title
 
     class Meta:
-        ordering = ['last_update']
+        ordering = ['-last_update']
 
 
 class Customer(models.Model):
@@ -65,7 +65,7 @@ class Order(models.Model):
         return f'{self.customer} - {self.payment_status}'
 
     class Meta:
-        ordering = ['placed_at']
+        ordering = ['-placed_at']
 
 
 class Address(models.Model):
@@ -111,7 +111,7 @@ class Cart(models.Model):
         return self.create_at
 
     class Meta:
-        ordering = ['create_at']
+        ordering = ['-create_at']
 
 class CartItem(models.Model):
     cart = models.ForeignKey('Cart', on_delete=models.CASCADE)
@@ -129,7 +129,7 @@ class Promotion(models.Model):
     discount = models.FloatField()
 
     def __str__(self):
-        return self.discount
+        return str(self.discount)
 
     class Meta:
         ordering = ['discount']
