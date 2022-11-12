@@ -167,7 +167,7 @@ class CartItemAdmin(admin.ModelAdmin):
     list_per_page = 10
     search_fields = ['product__title__istartswith']
     autocomplete_fields = ['product']
-    
+
 
 @admin.register(Promotion)
 class PromotionAdmin(admin.ModelAdmin):
