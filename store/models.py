@@ -108,7 +108,7 @@ class Cart(models.Model):
     create_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.create_at
+        return str(self.create_at)
 
     class Meta:
         ordering = ['-create_at']
