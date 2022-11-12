@@ -3,7 +3,7 @@ from django.db.models.aggregates import Count
 from django.utils.html import format_html, urlencode
 from django.urls import reverse
 from decimal import Decimal
-from .models import Product, Collection, Promotion
+from .models import Product, Collection, Promotion, Customer, Order
 
 # Register your models here.
 
@@ -78,6 +78,44 @@ class ProductAdmin(admin.ModelAdmin):
         ordering = ['last_update', 'inventory']
 
 
+@admin.register(Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ['full_name', 'email', 'phone',
+                    'birth_day', 'customer_order', 'membership']
+    list_per_page = 10
+    list_editable = ['membership', 'phone']
+    list_filter = ['membership']
+    search_fields = ['first_name__istartswith', 'last_name__istartswith']
+
+    def full_name(self, customer: Customer):
+        return f'{customer.first_name} {customer.last_name}'
+
+    def customer_order(self, order: Order):
+        url = (
+            reverse('admin:store_order_changelist')
+            + '?'
+            + urlencode({
+                'customer__id': order.id
+            })
+        )
+        return format_html(f'<a href="{url}">{order.customer_order}</a>')
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).annotate(
+            customer_order=Count('order')
+        )
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['customer', 'payment_status', 'placed_at']
+    list_per_page = 10
+    list_editable = ['payment_status']
+    list_filter = ['payment_status']
+    search_fields = ['customer']
+    autocomplete_fields = ['customer']
+
+
 @admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ['title', 'featured_product', 'product_count']
@@ -86,12 +124,12 @@ class CollectionAdmin(admin.ModelAdmin):
     autocomplete_fields = ['featured_product']
     search_fields = ['title']
 
-    def product_count(self, collection:Collection):
+    def product_count(self, collection: Collection):
         url = (
             reverse('admin:store_product_changelist')
             + '?'
             + urlencode({
-                'collection__id':str(collection.id)
+                'collection__id': str(collection.id)
             })
         )
         return format_html(f'<a href="{url}">{collection.product_count}</a>')
@@ -100,6 +138,7 @@ class CollectionAdmin(admin.ModelAdmin):
         return super().get_queryset(request).annotate(
             product_count=Count('product')
         )
+
 
 @admin.register(Promotion)
 class PromotionAdmin(admin.ModelAdmin):
