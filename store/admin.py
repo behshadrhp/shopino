@@ -3,7 +3,7 @@ from django.db.models.aggregates import Count
 from django.utils.html import format_html, urlencode
 from django.urls import reverse
 from decimal import Decimal
-from .models import Product, Collection, Promotion, Customer, Order
+from .models import Product, Collection, Promotion, Customer, Order, Address
 
 # Register your models here.
 
@@ -112,8 +112,18 @@ class OrderAdmin(admin.ModelAdmin):
     list_per_page = 10
     list_editable = ['payment_status']
     list_filter = ['payment_status']
-    search_fields = ['customer']
+    search_fields = ['customer__first_name__icontains', 'customer__last_name__icontains']
     autocomplete_fields = ['customer']
+
+
+@admin.register(Address)
+class AddressAdmin(admin.ModelAdmin):
+    list_display = ['customer', 'city', 'street']
+    list_per_page = 10
+    list_editable = ['city', 'street']
+    search_fields = ['customer__first_name__icontains', 'customer__last_name__icontains']
+    autocomplete_fields = ['customer']
+
 
 
 @admin.register(Collection)
