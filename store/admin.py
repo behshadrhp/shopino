@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.db.models.aggregates import Count
+from django.utils.html import format_html, urlencode
+from django.urls import reverse
 from decimal import Decimal
 from .models import Product, Collection, Promotion
 
@@ -77,9 +80,28 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
+    list_display = ['title', 'featured_product', 'product_count']
+    list_per_page = 10
+    list_editable = ['featured_product']
+    autocomplete_fields = ['featured_product']
     search_fields = ['title']
 
+    def product_count(self, collection:Collection):
+        url = (
+            reverse('admin:store_product_changelist')
+            + '?'
+            + urlencode({
+                'collection__id':str(collection.id)
+            })
+        )
+        return format_html(f'<a href="{url}">{collection.product_count}</a>')
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).annotate(
+            product_count=Count('product')
+        )
 
 @admin.register(Promotion)
 class PromotionAdmin(admin.ModelAdmin):
     search_fields = ['discount']
+    list_per_page = 10
