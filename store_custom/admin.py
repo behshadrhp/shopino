@@ -7,6 +7,7 @@ from store.models import Product
 # Register your models here.
 
 class TagInline(GenericTabularInline):
+    autocomplete_fields = ['tag']
     model = TagItem
 
 class CustomProductAdmin(ProductAdmin):
