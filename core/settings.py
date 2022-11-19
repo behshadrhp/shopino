@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'like',
     'store_custom',
     'debug_toolbar',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

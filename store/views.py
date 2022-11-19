@@ -1,10 +1,14 @@
-from django.shortcuts import render
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 
 # Create your views here.
 
-def hello_world(request):
-    name = 'Behshad RahmanPour'
+@api_view()
+def product_list(request):
+    return Response('ok')
 
-    context = {'name':name}
-    return render(request, 'src/index.html', context)
+
+@api_view()
+def product_detail(request, pk):
+    return Response(pk)
