@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     'store',
     'tag',
     'like',
@@ -95,8 +95,8 @@ DATABASES = {
         'NAME': 'shopino',
         'USER': 'root',
         'PASSWORD': '9814*45*83',
-        'HOST':'localhost',
-        'PORT':'3306',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
@@ -141,3 +141,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Rest Framework Conf
+REST_FRAMEWORK = {
+    'COERCE_DECIMAL_TO_STRING': False,
+}
