@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import ProductSerializer
@@ -14,6 +15,6 @@ def product_list(request):
 
 @api_view()
 def product_detail(request, pk):
-    queryset = Product.objects.get(pk=pk)
+    queryset = get_object_or_404(Product, pk=pk)
     serializer = ProductSerializer(queryset)
     return Response(serializer.data)
