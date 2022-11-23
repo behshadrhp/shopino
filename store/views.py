@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404
-from django.db.models import Count
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,10 +7,12 @@ from .models import Product, Collection
 
 # Create your views here.
 
+
 @api_view(['GET', 'POST'])
 def product_list(request):
     if request.method == 'GET':
-        queryset = Product.objects.select_related('collection').all().order_by('id')
+        queryset = Product.objects.select_related(
+            'collection').all().order_by('id')
         serializers = ProductSerializer(queryset, many=True)
         return Response(serializers.data)
     elif request.method == 'POST':
