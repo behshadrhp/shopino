@@ -35,10 +35,11 @@ def product_detail(request, pk):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_404_NOT_FOUND)
     elif request.method == 'DELETE':
-        if queryset.orderitems.count() > 0:
-            return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-        queryset.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        try:
+            queryset.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except ProtectedError:
+            return Response({'message': 'Product cannot be deleted because it is associated with an OrderItem .'}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['GET', 'POST'])
