@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.db.models import ProtectedError
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -51,3 +52,22 @@ def collection_list(request):
         serializers.is_valid(raise_exception=True)
         serializers.save()
         return Response(serializers.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def collection_detail(request, pk):
+    queryset = get_object_or_404(Collection, pk=pk)
+    if request.method == 'GET':
+        serializer = CollectionSerializer(queryset)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = CollectionSerializer(queryset, request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_404_NOT_FOUND)
+    elif request.method == 'DELETE':
+        try:
+            queryset.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except ProtectedError:
+            return Response({'message': 'Collection cannot be deleted because it is associated with an product .'}, status=status.HTTP_404_NOT_FOUND)
