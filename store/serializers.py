@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product
+from .models import Product, Collection
 from decimal import Decimal
 
 
@@ -29,3 +29,9 @@ class ProductSerializer(serializers.ModelSerializer):
         discount = self.discount_price(product)
         profit = product.price - Decimal(discount)
         return round(profit, 2)
+
+
+class CollectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Collection
+        fields = ['id', 'title']
