@@ -3,25 +3,17 @@ from django.db.models import ProtectedError
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView
 from .serializers import ProductSerializer, CollectionSerializer
 from .models import Product, Collection
 
 # Create your views here.
 
 
-class Products(APIView):
-    def get(self, request):
-        queryset = Product.objects.select_related(
-            'collection').all().order_by('id')
-        serializers = ProductSerializer(queryset, many=True)
-        return Response(serializers.data)
-
-    def post(self, request):
-        serializers = ProductSerializer(data=request.data)
-        serializers.is_valid(raise_exception=True)
-        serializers.save()
-        return Response(serializers.data, status=status.HTTP_201_CREATED)
-
+class Products(ListCreateAPIView):
+    queryset = Product.objects.select_related(
+        'collection').all().order_by('id')
+    serializer_class = ProductSerializer
 
 class ProductDetail(APIView):
     def get(self, request, pk):
@@ -44,17 +36,9 @@ class ProductDetail(APIView):
             return Response({'message': 'Product cannot be deleted because it is associated with an OrderItem .'}, status=status.HTTP_404_NOT_FOUND)
 
 
-class Collections(APIView):
-    def get(self, request):
-        queryset = Collection.objects.all().order_by('id')
-        serializers = CollectionSerializer(queryset, many=True)
-        return Response(serializers.data)
-
-    def post(self, request):
-        serializers = CollectionSerializer(data=request.data)
-        serializers.is_valid(raise_exception=True)
-        serializers.save()
-        return Response(serializers.data, status=status.HTTP_201_CREATED)
+class Collections(ListCreateAPIView):
+    queryset = Collection.objects.all().order_by('id')
+    serializer_class = CollectionSerializer
 
 
 class CollectionDetail(APIView):
