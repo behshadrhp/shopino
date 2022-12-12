@@ -2,8 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import ProtectedError
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from .serializers import ProductSerializer, CollectionSerializer
 from .models import Product, Collection
 
@@ -15,17 +14,10 @@ class Products(ListCreateAPIView):
         'collection').all().order_by('id')
     serializer_class = ProductSerializer
 
-class ProductDetail(APIView):
-    def get(self, request, pk):
-        queryset = get_object_or_404(Product, pk=pk)
-        serializer = ProductSerializer(queryset)
-        return Response(serializer.data)
 
-    def put(self, request, pk):
-        queryset = get_object_or_404(Product, pk=pk)
-        serializer = ProductSerializer(queryset, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+class ProductDetail(RetrieveUpdateDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
     def delete(self, request, pk):
         queryset = get_object_or_404(Product, pk=pk)
@@ -41,18 +33,9 @@ class Collections(ListCreateAPIView):
     serializer_class = CollectionSerializer
 
 
-class CollectionDetail(APIView):
-    def get(self, request, pk):
-        queryset = get_object_or_404(Collection, pk=pk)
-        serializer = CollectionSerializer(queryset)
-        return Response(serializer.data)
-
-    def put(self, request, pk):
-        queryset = get_object_or_404(Collection, pk=pk)
-        serializer = CollectionSerializer(queryset, request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_404_NOT_FOUND)
+class CollectionDetail(RetrieveUpdateDestroyAPIView):
+    queryset = Collection.objects.all()
+    serializer_class = CollectionSerializer
 
     def delete(self, request, pk):
         queryset = get_object_or_404(Collection, pk=pk)
