@@ -1,40 +1,42 @@
 from django.shortcuts import get_object_or_404
 from django.db.models import ProtectedError
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
 from .serializers import ProductSerializer, CollectionSerializer
 from .models import Product, Collection
 
 # Create your views here.
 
 
-@api_view(['GET', 'POST'])
-def product_list(request):
-    if request.method == 'GET':
+class Products(APIView):
+    def get(self, request):
         queryset = Product.objects.select_related(
             'collection').all().order_by('id')
         serializers = ProductSerializer(queryset, many=True)
         return Response(serializers.data)
-    elif request.method == 'POST':
+
+    def post(self, request):
         serializers = ProductSerializer(data=request.data)
         serializers.is_valid(raise_exception=True)
         serializers.save()
         return Response(serializers.data, status=status.HTTP_201_CREATED)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def product_detail(request, pk):
-    queryset = get_object_or_404(Product, pk=pk)
-    if request.method == 'GET':
+class ProductDetail(APIView):
+    def get(self, request, pk):
+        queryset = get_object_or_404(Product, pk=pk)
         serializer = ProductSerializer(queryset)
         return Response(serializer.data)
-    elif request.method == 'PUT':
+
+    def put(self, request, pk):
+        queryset = get_object_or_404(Product, pk=pk)
         serializer = ProductSerializer(queryset, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_404_NOT_FOUND)
-    elif request.method == 'DELETE':
+
+    def delete(self, request, pk):
+        queryset = get_object_or_404(Product, pk=pk)
         try:
             queryset.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
@@ -42,31 +44,34 @@ def product_detail(request, pk):
             return Response({'message': 'Product cannot be deleted because it is associated with an OrderItem .'}, status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['GET', 'POST'])
-def collection_list(request):
-    if request.method == 'GET':
+class Collections(APIView):
+    def get(self, request):
         queryset = Collection.objects.all().order_by('id')
         serializers = CollectionSerializer(queryset, many=True)
         return Response(serializers.data)
-    if request.method == 'POST':
+
+    def post(self, request):
         serializers = CollectionSerializer(data=request.data)
         serializers.is_valid(raise_exception=True)
         serializers.save()
         return Response(serializers.data, status=status.HTTP_201_CREATED)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def collection_detail(request, pk):
-    queryset = get_object_or_404(Collection, pk=pk)
-    if request.method == 'GET':
+class CollectionDetail(APIView):
+    def get(self, request, pk):
+        queryset = get_object_or_404(Collection, pk=pk)
         serializer = CollectionSerializer(queryset)
         return Response(serializer.data)
-    elif request.method == 'PUT':
+
+    def put(self, request, pk):
+        queryset = get_object_or_404(Collection, pk=pk)
         serializer = CollectionSerializer(queryset, request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_404_NOT_FOUND)
-    elif request.method == 'DELETE':
+
+    def delete(self, request, pk):
+        queryset = get_object_or_404(Collection, pk=pk)
         try:
             queryset.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
