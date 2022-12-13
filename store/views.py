@@ -13,7 +13,7 @@ class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all().order_by('id')
     serializer_class = ProductSerializer
 
-    def delete(self, request, pk):
+    def destroy(self, request, pk):
         queryset = get_object_or_404(Product, pk=pk)
         try:
             queryset.delete()
@@ -26,7 +26,7 @@ class CollectionViewSet(ModelViewSet):
     queryset = Collection.objects.all().order_by('id')
     serializer_class = CollectionSerializer
 
-    def delete(self, request, pk):
+    def destroy(self, request, pk):
         queryset = get_object_or_404(Collection, pk=pk)
         try:
             queryset.delete()
