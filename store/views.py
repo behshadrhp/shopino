@@ -3,8 +3,8 @@ from django.db.models import ProtectedError
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
-from .serializers import ProductSerializer, CollectionSerializer
-from .models import Product, Collection
+from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer
+from .models import Product, Collection, Review
 
 # Create your views here.
 
@@ -33,3 +33,8 @@ class CollectionViewSet(ModelViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except ProtectedError:
             return Response({'message': 'Collection cannot be deleted because it is associated with an product .'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class ReviewViewSet(ModelViewSet):
+    queryset = Review.objects.all().order_by('id')
+    serializer_class = ReviewSerializer

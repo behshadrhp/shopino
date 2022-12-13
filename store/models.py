@@ -69,7 +69,8 @@ class Order(models.Model):
 
 
 class Address(models.Model):
-    customer = models.OneToOneField('Customer', on_delete=models.CASCADE, primary_key=True)
+    customer = models.OneToOneField(
+        'Customer', on_delete=models.CASCADE, primary_key=True)
     city = models.CharField(max_length=255)
     street = models.CharField(max_length=255)
 
@@ -82,7 +83,8 @@ class Address(models.Model):
 
 class Collection(models.Model):
     title = models.CharField(max_length=255)
-    featured_product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True, related_name='products')
+    featured_product = models.ForeignKey(
+        'Product', on_delete=models.SET_NULL, null=True, related_name='products')
 
     def __str__(self):
         return self.title
@@ -93,7 +95,8 @@ class Collection(models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey('Order', on_delete=models.PROTECT)
-    product = models.ForeignKey('Product', on_delete=models.PROTECT, related_name='orderitems')
+    product = models.ForeignKey(
+        'Product', on_delete=models.PROTECT, related_name='orderitems')
     quantity = models.SmallIntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
 
@@ -113,6 +116,7 @@ class Cart(models.Model):
     class Meta:
         ordering = ['-create_at']
 
+
 class CartItem(models.Model):
     cart = models.ForeignKey('Cart', on_delete=models.CASCADE)
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
@@ -124,6 +128,7 @@ class CartItem(models.Model):
     class Meta:
         ordering = ['cart']
 
+
 class Promotion(models.Model):
     description = models.CharField(max_length=255)
     discount = models.FloatField()
@@ -133,3 +138,11 @@ class Promotion(models.Model):
 
     class Meta:
         ordering = ['discount']
+
+
+class Review(models.Model):
+    product = models.ForeignKey(
+        'Product', on_delete=models.CASCADE, related_name='reviews')
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    date = models.DateField(auto_now_add=True)
