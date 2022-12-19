@@ -36,8 +36,10 @@ class CollectionViewSet(ModelViewSet):
 
 
 class ReviewViewSet(ModelViewSet):
-    queryset = Review.objects.all().order_by('id')
     serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        return Review.objects.filter(product_id=self.kwargs['product_pk_pk']).order_by('id')
 
     def get_serializer_context(self):
         return {'product_id': self.kwargs['product_pk_pk']}
