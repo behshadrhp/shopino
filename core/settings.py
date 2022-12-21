@@ -38,13 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'rest_framework',
+    'debug_toolbar',
+    'store_custom',
+    'django_filters',
     'store',
     'tag',
     'like',
-    'store_custom',
-    'debug_toolbar',
-    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -90,13 +90,13 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 
 DATABASES = {
-       'default': {
+    'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'shadino',
         'USER': 'root',
         'PASSWORD': 'toor',
-        'HOST':'localhost',
-        'PORT':'3306',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 

@@ -3,6 +3,7 @@ from django.db.models import ProtectedError
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
+from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer
 from .models import Product, Collection, Review
 
@@ -10,15 +11,10 @@ from .models import Product, Collection, Review
 
 
 class ProductViewSet(ModelViewSet):
+    queryset = Product.objects.all().order_by('id')
     serializer_class = ProductSerializer
-
-    def get_queryset(self):
-        queryset = Product.objects.all().order_by('id')
-        collection_id = self.request.query_params.get('collection_id')
-        if collection_id is not None:
-            queryset = queryset.filter(collection_id=collection_id)
-
-        return queryset
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['collection_id']
 
     def destroy(self, request, pk):
         queryset = get_object_or_404(Product, pk=pk)
