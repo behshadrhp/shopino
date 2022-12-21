@@ -6,6 +6,7 @@ from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer
 from .models import Product, Collection, Review
+from .filter import ProductFilter
 
 # Create your views here.
 
@@ -14,7 +15,7 @@ class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all().order_by('id')
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['collection_id']
+    filterset_class = ProductFilter
 
     def destroy(self, request, pk):
         queryset = get_object_or_404(Product, pk=pk)
