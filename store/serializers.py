@@ -47,7 +47,15 @@ class ReviewSerializer(serializers.ModelSerializer):
         return Review.objects.create(product_id=product_id, **validated_data)
 
 
+class CartItemCollectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Collection
+        fields = ['title']
+
+
 class CartItemProductSerializer(serializers.ModelSerializer):
+    collection = CartItemCollectionSerializer()
+
     class Meta:
         model = Product
         fields = ['title', 'price', 'inventory', 'collection', 'last_update']
