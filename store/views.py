@@ -75,5 +75,4 @@ class CartItemViewSet(ModelViewSet):
         return {'cart_id': self.kwargs['cart_pk']}
 
     def get_queryset(self):
-        print(self.kwargs)
         return CartItem.objects.filter(cart_id=self.kwargs['cart_pk']).select_related('product')
