@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'debug_toolbar',
     'store_custom',
+    'auth',
     'django_filters',
     'store',
     'tag',
