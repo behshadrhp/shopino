@@ -93,7 +93,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'shadino',
+        'NAME': 'shopino',
         'USER': 'root',
         'PASSWORD': 'toor',
         'HOST': 'localhost',

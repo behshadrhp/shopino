@@ -85,17 +85,21 @@ class CustomerAdmin(admin.ModelAdmin):
     list_per_page = 10
     list_editable = ['membership', 'phone']
     list_filter = ['membership']
-    search_fields = ['first_name__istartswith', 'last_name__istartswith']
+    search_fields = ['user__first_name__istartswith',
+                     'user__last_name__istartswith']
 
     def full_name(self, customer: Customer):
-        return f'{customer.first_name} {customer.last_name}'
+        return f'{customer.user}'
+
+    def email(self, customer: Customer):
+        return f'{customer.user.email}'
 
     def customer_order(self, order: Order):
         url = (
             reverse('admin:store_order_changelist')
             + '?'
             + urlencode({
-                'customer__id': order.id
+                'customer__user_id': order.id
             })
         )
         return format_html(f'<a href="{url}">{order.customer_order}</a>')
