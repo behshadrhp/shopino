@@ -99,7 +99,7 @@ class CustomerAdmin(admin.ModelAdmin):
             reverse('admin:store_order_changelist')
             + '?'
             + urlencode({
-                'customer__user_id': order.id
+                'customer__id': order.id
             })
         )
         return format_html(f'<a href="{url}">{order.customer_order}</a>')
