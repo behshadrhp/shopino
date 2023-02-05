@@ -155,8 +155,15 @@ REST_FRAMEWORK = {
 
 # Json Web Token
 SIMPLE_JWT = {
-   'AUTH_HEADER_TYPES': ('JWT',),
+    'AUTH_HEADER_TYPES': ('JWT',),
 }
 
 # authentication model
 AUTH_USER_MODEL = 'authentication.User'
+
+
+DJOSER = {
+    'SERIALIZERS': {
+        'user_create': 'core.serializers.UserCreateSerializer'
+    }
+}
