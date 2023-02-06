@@ -7,6 +7,16 @@ class CreateRetrieveViewSet(mixins.CreateModelMixin,
                             viewsets.GenericViewSet):
 
     """
-            A viewset that provides `retrieve` and `create` actions.
-        """
+            A viewset that provides `retrieve` and `create` and `delete` actions.
+    """
+    pass
+
+
+class CreateRetrieveUpdateViewSet(mixins.CreateModelMixin,
+                                  mixins.RetrieveModelMixin,
+                                  mixins.UpdateModelMixin,
+                                  viewsets.GenericViewSet):
+    """
+            A viewset that provides `retrieve` and `create` and `update` actions.
+    """
     pass
