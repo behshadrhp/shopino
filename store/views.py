@@ -7,6 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
+from .permissions import IsAdminOrReadOnly
 from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, CustomerSerializer
 from .viewset import CreateRetrieveViewSet, CreateRetrieveUpdateViewSet
 from .models import Product, Collection, Review, Cart, CartItem, Customer
@@ -24,6 +25,7 @@ class ProductViewSet(ModelViewSet):
     pagination_class = DefaultPagination
     search_fields = ['title', 'description', 'collection__title']
     ordering_fields = ['price', 'last_update']
+    permission_classes = [IsAdminOrReadOnly]
 
     def destroy(self, request, pk):
         queryset = get_object_or_404(Product, pk=pk)
@@ -37,6 +39,7 @@ class ProductViewSet(ModelViewSet):
 class CollectionViewSet(ModelViewSet):
     queryset = Collection.objects.all().order_by('id')
     serializer_class = CollectionSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
     def destroy(self, request, pk):
         queryset = get_object_or_404(Collection, pk=pk)
