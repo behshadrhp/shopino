@@ -3,10 +3,10 @@ from . import views
 
 router = DefaultRouter()
 router.register('products', views.ProductViewSet, basename='products')
-router.register('collections', views.CollectionViewSet)
-router.register('cart', views.CartViewSet)
-router.register('customer', views.CustomerViewSet)
-router.register('orders', views.OrderView, basename='order')
+router.register('collections', views.CollectionViewSet, basename='collections')
+router.register('carts', views.CartViewSet, basename='carts')
+router.register('customers', views.CustomerViewSet, basename='customers')
+router.register('orders', views.OrderView, basename='orders')
 
 products_router = NestedDefaultRouter(router, 'products', lookup='product_pk')
 products_router.register('reviews', views.ReviewViewSet,
