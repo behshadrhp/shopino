@@ -148,9 +148,15 @@ class OrderItemSerializer(serializers.ModelSerializer):
         fields = ['id', 'product', 'quantity', 'price']
 
 
-class OrderSerializer(serializers.ModelSerializer):
+class OrderSAFESerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True)
 
     class Meta:
         model = Order
         fields = ['id', 'customer', 'placed_at', 'items', 'payment_status']
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['id', 'customer', 'placed_at', 'payment_status']
