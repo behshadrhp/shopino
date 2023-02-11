@@ -158,11 +158,14 @@ class CollectionAdmin(admin.ModelAdmin):
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ['order', 'product', 'quantity', 'price']
-    list_editable = ['quantity', 'price']
+    list_editable = ['quantity']
     list_per_page = 10
     search_fields = ['order__customer__first_name__istartswith',
                      'order__customer__last_name__istartswith']
     autocomplete_fields = ['order', 'product']
+
+    def price(self, order: OrderItem):
+        return order.quantity * order.product.price
 
 
 @admin.register(CartItem)

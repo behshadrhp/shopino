@@ -107,13 +107,12 @@ class OrderItem(models.Model):
         'Product', on_delete=models.PROTECT, related_name='orderitems')
     quantity = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)])
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-
+    
     def __str__(self):
-        return f'{self.product} - {self.order} - {self.price}'
+        return f'{self.product} - {self.order}'
 
     class Meta:
-        ordering = ['product', 'price']
+        ordering = ['product']
 
 
 class Cart(models.Model):
