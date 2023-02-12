@@ -8,7 +8,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import IsAdminOrReadOnly, ViewCustomerHistoryPermission
-from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, CustomerSerializer, OrderSerializer,  OrderSAFESerializer
+from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, CustomerSerializer, CreateOrderSerializer,  OrderSAFESerializer
 from .viewset import CreateRetrieveViewSet
 from .models import Product, Collection, Review, Cart, CartItem, Customer, Order
 from .pagination import DefaultPagination
@@ -111,7 +111,10 @@ class OrderView(ModelViewSet):
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:
             return OrderSAFESerializer
-        return OrderSerializer
+        return CreateOrderSerializer
+
+    def get_serializer_context(self):
+        return {'user_id': self.request.user.id}
 
     def get_queryset(self):
         user = self.request.user
