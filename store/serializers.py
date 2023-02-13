@@ -1,6 +1,7 @@
+from django.db.transaction import atomic
 from rest_framework import serializers
-from .models import Product, Collection, Review, Cart, CartItem, Customer, Order, OrderItem
 from decimal import Decimal
+from .models import Product, Collection, Review, Cart, CartItem, Customer, Order, OrderItem
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -155,6 +156,22 @@ class CreateOrderSerializer(serializers.Serializer):
     cart_id = serializers.UUIDField()
 
     def save(self, **kwargs):
-        (customer, create) = Customer.objects.get_or_create(
-            user_id=self.context['user_id'])
-        Order.objects.create(customer=customer)
+        # For when the server goes offline or an error occurs in it to restore the data storage or protect the information.
+        with atomic():
+            cart_id = self.validated_data['cart_id']
+
+            (customer, create) = Customer.objects.get_or_create(
+                user_id=self.context['user_id'])
+            order = Order.objects.create(customer=customer)
+
+            cart_item = CartItem.objects.select_related(
+                'product').filter(cart_id=cart_id)
+            order_items = [
+                OrderItem(
+                    order=order,
+                    product=item.product,
+                    quantity=item.quantity
+                ) for item in cart_item
+            ]
+            OrderItem.objects.bulk_create(order_items)
+            Cart.objects.filter(pk=cart_id).delete()
