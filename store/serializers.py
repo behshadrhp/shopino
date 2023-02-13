@@ -155,6 +155,14 @@ class OrderSAFESerializer(serializers.ModelSerializer):
 class CreateOrderSerializer(serializers.Serializer):
     cart_id = serializers.UUIDField()
 
+    def validate_cart_id(self, cart_id):
+        if not Cart.objects.filter(pk=cart_id).exists():
+            raise serializers.ValidationError(
+                'No cart with the given ID was found.')
+        elif CartItem.objects.filter(pk=cart_id).count() == 0:
+            raise serializers.ValidationError('The cart is empty.')
+        return cart_id
+
     def save(self, **kwargs):
         # For when the server goes offline or an error occurs in it to restore the data storage or protect the information.
         with atomic():
