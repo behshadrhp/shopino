@@ -113,6 +113,16 @@ class OrderView(ModelViewSet):
             return OrderSAFESerializer
         return CreateOrderSerializer
 
+    def create(self, request, *args, **kwargs):
+        serializer = CreateOrderSerializer(
+            data=request.data,
+            context={'user_id': self.request.user.id}
+        )
+        serializer.is_valid(raise_exception=True)
+        order = serializer.save()
+        serializer = OrderSAFESerializer(order)
+        return Response(serializer.data)
+
     def get_serializer_context(self):
         return {'user_id': self.request.user.id}
 
