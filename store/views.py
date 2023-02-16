@@ -8,7 +8,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import IsAdminOrReadOnly, ViewCustomerHistoryPermission
-from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, CustomerSerializer, CreateOrderSerializer,  OrderSAFESerializer, OrderSerializer
+from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, CustomerSerializer, CreateOrderSerializer,  OrderSAFESerializer, OrderSerializer, UpdateOrderSerializer
 from .viewset import CreateRetrieveViewSet
 from .models import Product, Collection, Review, Cart, CartItem, Customer, Order
 from .pagination import DefaultPagination
@@ -106,7 +106,8 @@ class CustomerViewSet(ModelViewSet):
 
 
 class OrderView(ModelViewSet):
-    http_method_names = ['get', 'post', 'delete', 'patch', 'put', 'head', 'options']
+    http_method_names = ['get', 'post', 'delete',
+                         'patch', 'put', 'head', 'options']
 
     def get_permissions(self):
         if self.request.method in ['PATCH', 'PUT', 'DELETE']:
@@ -118,6 +119,8 @@ class OrderView(ModelViewSet):
             return OrderSAFESerializer
         elif self.request.method == 'POST':
             return CreateOrderSerializer
+        elif self.request.method in ['PUT', 'PATCH']:
+            return UpdateOrderSerializer
         return OrderSerializer
 
     def create(self, request, *args, **kwargs):

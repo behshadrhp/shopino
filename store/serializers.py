@@ -144,6 +144,12 @@ class OrderItemSerializer(serializers.ModelSerializer):
         fields = ['id', 'product', 'quantity', 'price']
 
 
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['id', 'customer', 'payment_status', 'placed_at']
+
+
 class OrderSAFESerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True)
 
@@ -187,7 +193,7 @@ class CreateOrderSerializer(serializers.Serializer):
             return order
 
 
-class OrderSerializer(serializers.ModelSerializer):
+class UpdateOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ['id', 'customer', 'payment_status', 'placed_at']
+        fields = ['payment_status']
