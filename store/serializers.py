@@ -157,7 +157,8 @@ class CreateOrderSerializer(serializers.Serializer):
 
     def validate_cart_id(self, cart_id):
         if not Cart.objects.filter(pk=cart_id).exists():
-            raise serializers.ValidationError('No cart with the given ID was found.')
+            raise serializers.ValidationError(
+                'No cart with the given ID was found.')
         elif CartItem.objects.filter(cart=cart_id).count() == 0:
             raise serializers.ValidationError('The cart is empty.')
         return cart_id
@@ -184,3 +185,9 @@ class CreateOrderSerializer(serializers.Serializer):
             Cart.objects.filter(pk=cart_id).delete()
 
             return order
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['id', 'customer', 'payment_status', 'placed_at']

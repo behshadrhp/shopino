@@ -8,7 +8,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import IsAdminOrReadOnly, ViewCustomerHistoryPermission
-from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, CustomerSerializer, CreateOrderSerializer,  OrderSAFESerializer
+from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, CustomerSerializer, CreateOrderSerializer,  OrderSAFESerializer, OrderSerializer
 from .viewset import CreateRetrieveViewSet
 from .models import Product, Collection, Review, Cart, CartItem, Customer, Order
 from .pagination import DefaultPagination
@@ -111,7 +111,9 @@ class OrderView(ModelViewSet):
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:
             return OrderSAFESerializer
-        return CreateOrderSerializer
+        elif self.request.method == 'POST':
+            return CreateOrderSerializer
+        return OrderSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = CreateOrderSerializer(
@@ -132,6 +134,5 @@ class OrderView(ModelViewSet):
         if user.is_staff:
             return Order.objects.all()
 
-        (customer_id, create) = Customer.objects.only(
-            'id').get_or_create(user_id=user.id)
+        (customer_id, create) = Customer.objects.only('id').get_or_create(user_id=user.id)
         return Order.objects.filter(customer_id=customer_id).order_by('-id')
