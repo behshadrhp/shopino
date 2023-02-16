@@ -106,7 +106,12 @@ class CustomerViewSet(ModelViewSet):
 
 
 class OrderView(ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    http_method_names = ['get', 'post', 'delete', 'patch', 'put', 'head', 'options']
+
+    def get_permissions(self):
+        if self.request.method in ['PATCH', 'PUT', 'DELETE']:
+            return [IsAdminUser()]
+        return [IsAuthenticated()]
 
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:
@@ -134,5 +139,6 @@ class OrderView(ModelViewSet):
         if user.is_staff:
             return Order.objects.all()
 
-        (customer_id, create) = Customer.objects.only('id').get_or_create(user_id=user.id)
+        (customer_id, create) = Customer.objects.only(
+            'id').get_or_create(user_id=user.id)
         return Order.objects.filter(customer_id=customer_id).order_by('-id')
