@@ -134,4 +134,4 @@ class OrderView(ModelViewSet):
 
         (customer_id, create) = Customer.objects.only(
             'id').get_or_create(user_id=user.id)
-        return Order.objects.filter(customer_id=customer_id)
+        return Order.objects.filter(customer_id=customer_id).order_by('-id')
