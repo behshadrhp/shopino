@@ -3,7 +3,7 @@ from django.db.models.aggregates import Count
 from django.utils.html import format_html, urlencode
 from django.urls import reverse
 from decimal import Decimal
-from .models import Product, Collection, Promotion, Customer, Order, Address, OrderItem, Cart, CartItem
+from .models import Product, Collection, Promotion, Customer, Order, Address, OrderItem, Cart, CartItem, ProductImage
 
 # Register your models here.
 
@@ -180,3 +180,8 @@ class CartItemAdmin(admin.ModelAdmin):
 class PromotionAdmin(admin.ModelAdmin):
     search_fields = ['discount']
     list_per_page = 10
+
+
+@admin.register(ProductImage)
+class ProductImageAdmin(admin.ModelAdmin):
+    pass
