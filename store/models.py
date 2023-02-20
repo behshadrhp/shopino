@@ -23,6 +23,12 @@ class Product(models.Model):
         ordering = ['-last_update']
 
 
+class ProductImage(models.Model):
+    product = models.ForeignKey(
+        'Product', on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='store/image')
+
+
 class Customer(models.Model):
     MEMBERSHIP_BRONZE = 'B'
     MEMBERSHIP_SILVER = 'S'
@@ -102,12 +108,13 @@ class Collection(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey('Order', on_delete=models.PROTECT, related_name='items')
+    order = models.ForeignKey(
+        'Order', on_delete=models.PROTECT, related_name='items')
     product = models.ForeignKey(
         'Product', on_delete=models.PROTECT, related_name='orderitems')
     quantity = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)])
-    
+
     def __str__(self):
         return f'{self.product} - {self.order}'
 
