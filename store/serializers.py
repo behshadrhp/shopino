@@ -4,11 +4,24 @@ from decimal import Decimal
 from .models import Product, Collection, Review, Cart, CartItem, Customer, Order, OrderItem, ProductImage
 
 
+class ProductImageSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        product_pk = self.context['product_pk']
+        return ProductImage.objects.create(product_id=product_pk, **validated_data)
+
+    class Meta:
+        model = ProductImage
+        fields = ['id', 'image']
+
+
 class ProductSerializer(serializers.ModelSerializer):
+    images = ProductImageSerializer(many=True, read_only=True)
+
     class Meta:
         model = Product
         fields = ['id', 'title', 'description', 'price',
-                  'discount', 'profit', 'inventory', 'collection', 'last_update']
+                  'discount', 'profit', 'inventory', 'collection', 'images', 'last_update']
 
     discount = serializers.SerializerMethodField(method_name='discount_price')
     profit = serializers.SerializerMethodField(
@@ -196,14 +209,3 @@ class UpdateOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['payment_status']
-
-
-class ProductImageSerializer(serializers.ModelSerializer):
-
-    def create(self, validated_data):
-        product_pk = self.context['product_pk']
-        return ProductImage.objects.create(product_id=product_pk, **validated_data)
-
-    class Meta:
-        model = ProductImage
-        fields = ['id', 'image']

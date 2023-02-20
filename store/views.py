@@ -18,7 +18,7 @@ from .filter import ProductFilter
 
 
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.all().order_by('id')
+    queryset = Product.objects.prefetch_related('images').all().order_by('id')
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = ProductFilter
