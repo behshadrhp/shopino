@@ -8,9 +8,9 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import IsAdminOrReadOnly, ViewCustomerHistoryPermission
-from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, CustomerSerializer, CreateOrderSerializer,  OrderSAFESerializer, OrderSerializer, UpdateOrderSerializer
+from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, CustomerSerializer, CreateOrderSerializer,  OrderSAFESerializer, OrderSerializer, UpdateOrderSerializer, ProductImageSerializer
 from .viewset import CreateRetrieveViewSet
-from .models import Product, Collection, Review, Cart, CartItem, Customer, Order
+from .models import Product, Collection, Review, Cart, CartItem, Customer, Order, ProductImage
 from .pagination import DefaultPagination
 from .filter import ProductFilter
 
@@ -144,3 +144,13 @@ class OrderView(ModelViewSet):
 
         customer_id = Customer.objects.only('id').get(user_id=user.id)
         return Order.objects.filter(customer_id=customer_id).order_by('-id')
+
+
+class ProductImageViewSet(ModelViewSet):
+    serializer_class = ProductImageSerializer
+
+    def get_queryset(self):
+        return ProductImage.objects.filter(product_id=self.kwargs['product_pk_pk'])
+
+    def get_serializer_context(self):
+        return {'product_pk': self.kwargs['product_pk_pk']}

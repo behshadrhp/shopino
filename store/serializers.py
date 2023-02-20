@@ -1,7 +1,7 @@
 from django.db.transaction import atomic
 from rest_framework import serializers
 from decimal import Decimal
-from .models import Product, Collection, Review, Cart, CartItem, Customer, Order, OrderItem
+from .models import Product, Collection, Review, Cart, CartItem, Customer, Order, OrderItem, ProductImage
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -196,3 +196,14 @@ class UpdateOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['payment_status']
+
+
+class ProductImageSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        product_pk = self.context['product_pk']
+        return ProductImage.objects.create(product_id=product_pk, **validated_data)
+
+    class Meta:
+        model = ProductImage
+        fields = ['id', 'image']
