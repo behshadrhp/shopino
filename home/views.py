@@ -1,7 +1,17 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.core.mail import send_mail, BadHeaderError
 
 # Create your views here.
 
-def home(self):
-    return HttpResponse('Hello, world')
+def home(request):
+    try:
+        send_mail(
+            'hello world', 
+            'send mail is successful', 
+            'behshad.rahmanpour@gmail.com', 
+            ['roino@gmail.com']
+        )
+    except BadHeaderError:
+        pass
+
+    return render(request, 'src/main.html')

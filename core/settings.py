@@ -75,6 +75,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'store/template'),
+            os.path.join(BASE_DIR / 'home/template')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -186,11 +187,11 @@ CORS_ALLOWED_ORIGINS = [
 
 
 # Email Conf
-EMAIL_BACKEND = 'django.core.email.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # Host for sending email
 EMAIL_HOST = 'localhost'
 # Port email
-EMAIL_PORT = 3300
+EMAIL_PORT = 2525
 # Default sending mail
 DEFAULT_FROM_EMAIL = 'behshad.rahmanpour@gmail.com'
 # Authentication information for sending mail
