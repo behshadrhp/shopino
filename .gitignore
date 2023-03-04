@@ -1,2 +1,24 @@
 # Ignore all image media in /media/store/image
 media/
+
+# vetual env
+Pipfile
+pipfile.lock
+
+# migartions
+core/migartions/
+store/migartions/
+auth/migartions/
+store_custom/migartions/
+like/migartions/
+tag/migartions/
+home/migartions/
+
+# __pycach__
+core/__pycach__/
+store/__pycach__/
+auth/__pycach__/
+store_custom/__pycach__/
+like/__pycach__/
+tag/__pycach__/
+home/__pycach__/
