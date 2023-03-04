@@ -3,7 +3,7 @@ media/
 
 # vetual env
 Pipfile
-pipfile.lock
+Pipfile.lock
 
 # migartions
 core/migartions/
