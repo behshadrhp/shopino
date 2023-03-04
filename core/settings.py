@@ -197,3 +197,7 @@ DEFAULT_FROM_EMAIL = 'behshad.rahmanpour@gmail.com'
 # Authentication information for sending mail
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
+
+
+# Conf Celery
+CELERY_BROKER_URL = 'redis://localhost:6379/1'
