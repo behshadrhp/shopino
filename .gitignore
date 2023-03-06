@@ -6,19 +6,19 @@ Pipfile
 Pipfile.lock
 
 # migartions
-core/migartions/
-store/migartions/
-auth/migartions/
-store_custom/migartions/
-like/migartions/
-tag/migartions/
-home/migartions/
+core/migrations/
+store/migrations/
+auth/migrations/
+store_custom/migrations/
+like/migrations/
+tag/migrations/
+home/migrations/
 
 # __pycach__
-core/__pycach__/
-store/__pycach__/
-auth/__pycach__/
-store_custom/__pycach__/
-like/__pycach__/
-tag/__pycach__/
-home/__pycach__/
+core/__pycache__/
+store/__pycache__/
+auth/__pycache__/
+store_custom/__pycache__/
+like/__pycache__/
+tag/__pycache__/
+home/__pycache__/
