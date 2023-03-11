@@ -35,3 +35,6 @@ home/__pycache__/
 
 # Celery
 celerybeat-schedule
+
+# fuse hidden
+.fuse_hidden*
