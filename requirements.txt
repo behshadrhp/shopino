@@ -13,3 +13,4 @@ Pillow==9.4.0
 py3dns==3.2.1
 redis==4.5.1
 validate_email_address==1
+flower==1.2.0
