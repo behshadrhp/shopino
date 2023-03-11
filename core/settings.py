@@ -201,3 +201,10 @@ EMAIL_HOST_PASSWORD = ''
 
 # Conf Celery
 CELERY_BROKER_URL = 'redis://localhost:6379/1'
+CELERY_BEAT_SCHEDULE = {
+    'notification_customer': {
+        'task': 'home.tasks.notification_customer',
+        'schedule': 5,
+        'args': ['hello world'],
+    }
+}

@@ -32,3 +32,6 @@ home/__pycache__/
 
 # vscode settings
 .vscode/
+
+# Celery
+celerybeat-schedule
