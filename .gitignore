@@ -38,3 +38,6 @@ celerybeat-schedule
 
 # fuse hidden
 .fuse_hidden*
+
+# test pycache
+store/tests/__pycache__/
