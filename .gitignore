@@ -43,3 +43,6 @@ celerybeat-schedule
 
 # test pycache
 store/tests/__pycache__/
+
+# static files
+staticfiles/
