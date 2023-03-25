@@ -43,7 +43,7 @@ class Customer(models.Model):
 
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    phone = models.CharField(max_length=25, unique=True)
+    phone = models.CharField(max_length=25, unique=True, null=True, blank=True)
     birth_day = models.DateField(null=True, blank=True)
     membership = models.CharField(
         max_length=1, choices=MEMBERSHIP_CHOICE, default=MEMBERSHIP_BRONZE)
