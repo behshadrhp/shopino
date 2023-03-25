@@ -4,6 +4,7 @@ media/
 # virtual env
 Pipfile
 Pipfile.lock
+env/
 
 # migartions
 core/migrations/*
@@ -29,6 +30,7 @@ store_custom/__pycache__/
 like/__pycache__/
 tag/__pycache__/
 home/__pycache__/
+.pytest_cache/
 
 # vscode settings
 .vscode/
