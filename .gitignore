@@ -46,3 +46,6 @@ store/tests/__pycache__/
 
 # static files
 staticfiles/
+
+# Log file
+general.log
