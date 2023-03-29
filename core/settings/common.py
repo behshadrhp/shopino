@@ -216,28 +216,28 @@ CELERY_BEAT_SCHEDULE = {
 
 # logging configuration dictionary
 LOGGING = {
-     'version': 1,
-     'disable_existing_loggers': False,
-     'handlers': {
-         'console': {
-             'class': 'logging.StreamHandler'
-         },
-         'file': {
-             'class': 'logging.FileHandler',
-             'filename': 'general.log',
-             'formatter': 'verbose'
-         }
-     },
-     'loggers': {
-         '': {
-             'handlers': ['console', 'file'],
-             'level':  os.environ.get('DJANGO_LOG_LEVEL', 'INFO')
-         }
-     },
-     'formatters': {
-         'verbose': {
-             'format': '{asctime} ({levelname}) - {name} - {message}',
-             'style': '{' #str.format()
-         }
-     }
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler'
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console', 'file'],
+            'level':  os.environ.get('DJANGO_LOG_LEVEL', 'INFO')
+        }
+    },
+    'formatters': {
+        'verbose': {
+            'format': '{asctime} ({levelname}) - {name} - {message}',
+            'style': '{'  # str.format()
+        }
+    }
 }
