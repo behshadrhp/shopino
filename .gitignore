@@ -24,6 +24,7 @@ home/migrations/*
 
 # __pycach__
 core/__pycache__/
+core/settings/__pycache__/
 store/__pycache__/
 auth/__pycache__/
 store_custom/__pycache__/
